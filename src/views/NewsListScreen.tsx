@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { getNewsList, INewsItem } from '../actions/getNewsList';
-import { RootStackParamList } from '../navigators/types';
+import { Navigation } from '../navigators/types';
 import { stripHtml } from '../lib/text';
+import { Loader } from '../components/Loader';
 
 export const NewsListScreen = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'NewsList'>>();
+    const navigation = useNavigation<Navigation>();
     const [isLoading, setIsLoading] = useState(false);
 
     const [news, setNews] = useState<INewsItem[]>([]);
@@ -22,7 +22,7 @@ export const NewsListScreen = () => {
     const renderItem = ({ item }: { item: INewsItem }) => {
         return (
             <TouchableOpacity
-                onPress={() => navigation.navigate('NewsDetail', { item })}
+                onPress={() => navigation.navigate('NewsDetail', { id: item.id })}
                 style={styles.button}
             >
                 <Image source={{ uri: item.image_url }} style={styles.image} />
@@ -41,16 +41,12 @@ export const NewsListScreen = () => {
     }, []);
 
     return (
-        isLoading ? <View style={styles.loadingContainer}>
-            <Text style={styles.textTitle}>Loading news...</Text>
-        </View> : <FlatList data={news} renderItem={renderItem} contentContainerStyle={styles.container} />
+        isLoading ? <Loader /> : <FlatList data={news} renderItem={renderItem} contentContainerStyle={styles.container} />
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexGrow: 1,
         padding: 10,
         gap: 10,
     },

@@ -1,7 +1,9 @@
-import { INewsItem } from '../actions/getNewsList';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
     NewsList: undefined;
-    NewsDetail: { item: INewsItem };
+    NewsDetail: { id: number };
     Login: undefined;
+    Profile: undefined;
 };
+export type Navigation = NativeStackNavigationProp<RootStackParamList>;

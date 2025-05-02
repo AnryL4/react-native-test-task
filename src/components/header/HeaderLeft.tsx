@@ -1,5 +1,7 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Navigation } from '../../navigators/types';
 
 type HeaderRightProps = {
     avatarUrl: string | null;
@@ -7,12 +9,16 @@ type HeaderRightProps = {
 };
 
 const HeaderLeft: React.FC<HeaderRightProps> = ({ avatarUrl, userName }) => {
+    const navigation = useNavigation<Navigation>();
+
     return (
         <View style={styles.avatarContainer}>
-            <Image
-                source={{ uri: avatarUrl || undefined }}
-                style={styles.avatar}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                <Image
+                    source={{ uri: avatarUrl || undefined }}
+                    style={styles.avatar}
+                />
+            </TouchableOpacity>
             <Text style={styles.avatarText}>{userName}</Text>
         </View>
     );

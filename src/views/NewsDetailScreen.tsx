@@ -1,29 +1,46 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Text, StyleSheet, Image, ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../navigators/types';
 import { stripHtml } from '../lib/text';
+import { getNewsDetails } from '../actions/getNewsDetails';
+import { INewsItem } from '../actions/getNewsList';
+import { Loader } from '../components/Loader';
 
 type NewsDetailRouteProp = RouteProp<RootStackParamList, 'NewsDetail'>;
 
 export const NewsDetailScreen = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [newsDetail, setNewsDetail] = useState<INewsItem | null>(null);
     const navigation = useNavigation();
     const route = useRoute<NewsDetailRouteProp>();
-    const { item } = route.params;
+    const { id } = route.params;
+
+    const getNewsDetail = useCallback(async () => {
+        setIsLoading(true);
+        const response = await getNewsDetails(id);
+        setNewsDetail(response.news);
+        setIsLoading(false);
+    }, [id]);
 
     useLayoutEffect(() => {
-        navigation.setOptions({ title: item.title });
-    }, [navigation, item.title]);
+        navigation.setOptions({ title: newsDetail?.title });
+    }, [navigation, newsDetail?.title]);
 
-    return (
+    useEffect(() => {
+        getNewsDetail();
+    }, [getNewsDetail]);
+
+    return (isLoading ?
+        <Loader /> :
         <ScrollView contentContainerStyle={styles.container}>
-            <Image source={{ uri: item.image_url }} style={styles.image} />
+            <Image source={{ uri: newsDetail?.image_url }} style={styles.image} />
             <View style={styles.info}>
-                <Text>{item.category}</Text>
-                <Text>{item.created_at.split('T')[0]}</Text>
+                <Text>{newsDetail?.category}</Text>
+                <Text>{newsDetail?.created_at.split('T')[0]}</Text>
             </View>
-            <Text style={styles.textTitle}>{item.title}</Text>
-            <Text style={styles.textBody}>{stripHtml(item.body)}</Text>
+            <Text style={styles.textTitle}>{newsDetail?.title}</Text>
+            <Text style={styles.textBody}>{stripHtml(newsDetail?.body || '')}</Text>
         </ScrollView>
     );
 };

@@ -1,14 +1,19 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { NewsListScreen } from '../views/NewsListScreen';
 import { NewsDetailScreen } from '../views/NewsDetailScreen';
-import { RootState } from '../app/store';
 import { LoginScreen } from '../views/LoginScreen';
+import { ProfileScreen } from '../views/ProfileScreen';
+
+import { clearAuthState } from '../features/login/authSlice';
+
+import { RootState } from '../app/store';
 import { RootStackParamList } from './types';
-import { clearTokens } from '../features/login/authSlice';
-import HeaderLeft from '../features/header/HeaderLeft';
-import HeaderRight from '../features/header/HeaderRight';
+
+import HeaderLeft from '../components/header/HeaderLeft';
+import HeaderRight from '../components/header/HeaderRight';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -27,7 +32,7 @@ const AuthNavigator = () => {
     const renderRightHeader = () => {
         return auth.accessToken ?
             <HeaderRight
-                onLogout={() => dispatch(clearTokens())}
+                onLogout={() => dispatch(clearAuthState())}
             /> : null;
     };
 
@@ -44,6 +49,12 @@ const AuthNavigator = () => {
                         headerBackVisible: true,
                         headerLeft: undefined,
                         headerRight: undefined,
+                        headerTitleAlign: 'left',
+                    }} />
+                    <Stack.Screen name="Profile" component={ProfileScreen} options={{
+                        headerBackVisible: true,
+                        headerLeft: undefined,
+                        headerTitleAlign: 'left',
                     }} />
                 </>
             ) : (

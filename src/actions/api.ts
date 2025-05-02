@@ -35,6 +35,6 @@ export const API_URLS = {
     },
     news: {
         list: '/news',
-        currentNews: (id: string) => `/news/${id}`,
+        details: (id: number) => `/news/${id}`,
     },
 };
