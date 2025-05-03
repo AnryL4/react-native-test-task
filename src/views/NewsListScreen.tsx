@@ -39,16 +39,15 @@ export const NewsListScreen = () => {
         );
     };
 
-    const renderList = () => {
-        return news ? <FlatList data={news} renderItem={renderItem} contentContainerStyle={styles.container} /> : <Refresh onRefreshClick={() => getNews()} />;
-    };
+    const renderList = news ? <FlatList data={news} renderItem={renderItem} contentContainerStyle={styles.container} /> : <Refresh onRefreshClick={() => getNews()} />;
+
 
     useEffect(() => {
         getNews();
     }, []);
 
     return (
-        isLoading ? <Loader /> : renderList()
+        isLoading ? <Loader /> : renderList
     );
 };
 

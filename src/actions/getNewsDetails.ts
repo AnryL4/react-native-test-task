@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { API_URLS, apiWrapper } from './api';
 import { IError, INewsDetailsResponse } from './types';
 
@@ -9,6 +10,7 @@ export const getNewsDetails = async (
 
     if (!response.ok) {
         console.log(response?.data?.error);
+        Alert.alert('Error', response?.data?.error);
     }
 
     return response.data as INewsDetailsResponse;

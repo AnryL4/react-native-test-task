@@ -7,6 +7,7 @@ import { stripHtml } from '../lib/text';
 import { getNewsDetails } from '../actions/getNewsDetails';
 import { INewsItem } from '../actions/types';
 import { Loader } from '../components/Loader';
+import { Refresh } from '../components/Refresh';
 
 type NewsDetailRouteProp = RouteProp<RootStackParamList, 'NewsDetail'>;
 
@@ -24,6 +25,17 @@ export const NewsDetailScreen = () => {
         setIsLoading(false);
     }, [id]);
 
+    const renderNewsDetail = newsDetail ?
+        <ScrollView contentContainerStyle={styles.container}>
+            <Image source={{ uri: newsDetail?.image_url }} style={styles.image} />
+            <View style={styles.info}>
+                <Text>{newsDetail?.category}</Text>
+                <Text>{newsDetail?.created_at.split('T')[0]}</Text>
+            </View>
+            <Text style={styles.textTitle}>{newsDetail?.title}</Text>
+            <Text style={styles.textBody}>{stripHtml(newsDetail?.body || '')}</Text>
+        </ScrollView> : <Refresh onRefreshClick={() => getNewsDetail()} />;
+
     useLayoutEffect(() => {
         navigation.setOptions({ title: newsDetail?.title });
     }, [navigation, newsDetail?.title]);
@@ -33,16 +45,7 @@ export const NewsDetailScreen = () => {
     }, [getNewsDetail]);
 
     return (isLoading ?
-        <Loader /> :
-        <ScrollView contentContainerStyle={styles.container}>
-            <Image source={{ uri: newsDetail?.image_url }} style={styles.image} />
-            <View style={styles.info}>
-                <Text>{newsDetail?.category}</Text>
-                <Text>{newsDetail?.created_at.split('T')[0]}</Text>
-            </View>
-            <Text style={styles.textTitle}>{newsDetail?.title}</Text>
-            <Text style={styles.textBody}>{stripHtml(newsDetail?.body || '')}</Text>
-        </ScrollView>
+        <Loader /> : renderNewsDetail
     );
 };
 
