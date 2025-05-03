@@ -1,17 +1,14 @@
 import { API_URLS, apiWrapper } from './api';
-import { INewsItem } from './getNewsList';
+import { IError, INewsDetailsResponse } from './types';
 
-interface INewsDetailsResponse {
-    news: INewsItem;
-}
-
+// Запрос на получение новости по id
 export const getNewsDetails = async (
     id: number,
 ) => {
-    const response = await apiWrapper.get<INewsDetailsResponse>(API_URLS.news.details(id));
+    const response = await apiWrapper.get<INewsDetailsResponse, IError>(API_URLS.news.details(id));
 
     if (!response.ok) {
-        throw new Error('Get news details is error');
+        console.log(response?.data?.error);
     }
 
     return response.data as INewsDetailsResponse;

@@ -5,6 +5,7 @@ type HeaderRightProps = {
     onLogout: () => void;
 };
 
+// Компонент для правого заголовка экрана с кнопкой "Logout"
 const HeaderRight: React.FC<HeaderRightProps> = ({ onLogout }) => {
     return (
         <TouchableOpacity onPress={onLogout}>

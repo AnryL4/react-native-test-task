@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
+
+// Компонент для отображения индикатора загрузки новостей.
 export const Loader = () => {
     return <View style={styles.container}>
         <Text style={styles.text}>Loading news...</Text>

@@ -1,10 +1,11 @@
-import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
+import { StatusBar } from 'react-native';
+
 import { store } from './store';
 import AuthNavigator from '../navigators/AuthNavigator';
-import { StatusBar } from 'react-native';
 
 function App(): React.JSX.Element {
   return (

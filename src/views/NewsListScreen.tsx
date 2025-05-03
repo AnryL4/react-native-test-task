@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getNewsList, INewsItem } from '../actions/getNewsList';
+
+import { getNewsList } from '../actions/getNewsList';
+import { INewsItem } from '../actions/types';
 import { Navigation } from '../navigators/types';
 import { stripHtml } from '../lib/text';
 import { Loader } from '../components/Loader';
+import { Refresh } from '../components/Refresh';
 
 export const NewsListScreen = () => {
     const navigation = useNavigation<Navigation>();
@@ -36,12 +39,16 @@ export const NewsListScreen = () => {
         );
     };
 
+    const renderList = () => {
+        return news ? <FlatList data={news} renderItem={renderItem} contentContainerStyle={styles.container} /> : <Refresh onRefreshClick={() => getNews()} />;
+    };
+
     useEffect(() => {
         getNews();
     }, []);
 
     return (
-        isLoading ? <Loader /> : <FlatList data={news} renderItem={renderItem} contentContainerStyle={styles.container} />
+        isLoading ? <Loader /> : renderList()
     );
 };
 

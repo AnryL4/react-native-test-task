@@ -8,6 +8,7 @@ type HeaderRightProps = {
     userName: string | null;
 };
 
+// Компонент для отображения аватара пользователя и имени в шапке
 const HeaderLeft: React.FC<HeaderRightProps> = ({ avatarUrl, userName }) => {
     const navigation = useNavigation<Navigation>();
 

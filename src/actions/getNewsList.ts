@@ -1,29 +1,15 @@
+import { Alert } from 'react-native';
 import { API_URLS, apiWrapper } from './api';
+import { IError, INewsResponse } from './types';
 
-interface INewsResponse {
-    news: INewsItem[];
-}
-
-export interface INewsItem {
-    body: string;
-    category: string | null;
-    created_at: string;
-    icon: null;
-    id: number;
-    image_additional_url: string;
-    image_url: string;
-    model_name: string;
-    short_text: string;
-    table_name: string;
-    title: string;
-}
-
+// Запрос на получение списка новостей
 export const getNewsList = async (
 ) => {
-    const response = await apiWrapper.get<INewsResponse>(API_URLS.news.list);
+    const response = await apiWrapper.get<INewsResponse, IError>(API_URLS.news.list);
 
     if (!response.ok) {
-        throw new Error('Get news list error');
+        console.log(response?.data?.error);
+        Alert.alert('Error', response?.data?.error);
     }
 
     return response.data as INewsResponse;

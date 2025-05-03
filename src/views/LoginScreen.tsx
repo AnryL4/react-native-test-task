@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { authorization } from '../actions/authorization';
 import { useDispatch } from 'react-redux';
+
+import { authorization } from '../actions/authorization';
 
 export const LoginScreen = () => {
     const [email, setEmail] = React.useState<string>('');

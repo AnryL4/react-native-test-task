@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Text, StyleSheet, Image, ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+
 import { RootStackParamList } from '../navigators/types';
 import { stripHtml } from '../lib/text';
 import { getNewsDetails } from '../actions/getNewsDetails';
-import { INewsItem } from '../actions/getNewsList';
+import { INewsItem } from '../actions/types';
 import { Loader } from '../components/Loader';
 
 type NewsDetailRouteProp = RouteProp<RootStackParamList, 'NewsDetail'>;
